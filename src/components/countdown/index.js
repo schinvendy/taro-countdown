@@ -11,7 +11,6 @@ export default class Countdown extends Component {
     showDay: false, // 显示天数
     color: '#111', // 字体颜色
     symbol: ':', // 间隔符号
-    isStop: false, // 手动停止倒计时
     isClose: false, // 手动关闭倒计时
     onTick: () => {}, // 倒计时过程事件
     onEnd: () => {}, //倒计时结束事件
@@ -27,10 +26,6 @@ export default class Countdown extends Component {
 
   componentWillMount() {
     this.formatTargetTime(this.props.targetTime);
-  }
-
-  componentWillReceiveProps(props) {
-    this.formatTargetTime(props.targetTime);
   }
 
   componentWillUnmount() {
@@ -51,7 +46,7 @@ export default class Countdown extends Component {
   }
   // 计算剩余时间
   getremainingSecond() {
-    if (!this.state.targetTimestamp || this.props.isStop) return;
+    if (!this.state.targetTimestamp) return;
     // 目标时间
     let targetTimestamp = this.state.targetTimestamp;
     // 当前时间
@@ -75,7 +70,10 @@ export default class Countdown extends Component {
       day = hour = minute = second = '00';
       this.onTimeEnd();
     }
-
+    this.setTimeState(day, hour, minute, second);
+  }
+  // 设置时间
+  setTimeState(day, hour, minute, second) {
     // 是否显示天时分秒文字
     this.props.showDay && (day += '天');
     if (this.props.showText) {

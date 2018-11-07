@@ -15,15 +15,8 @@ export default class Index extends Component {
 
   state = {
     targetTime: '2018-12-22 20:00:00',
-    isStop: false,
     isClose: false,
     second: 0,
-  };
-
-  onStopCountdown = () => {
-    this.setState({
-      isStop: !this.state.isStop,
-    });
   };
 
   onCloseCountdown = () => {
@@ -74,24 +67,16 @@ export default class Index extends Component {
         <View className="demo-section">
           <View className="title">改变文本颜色</View>
           <Countdown targetTime={targetTime} withBorder showText showDay color="red" />
-          <Countdown className="block m-t-2" targetTime={targetTime} withBorder showText showDay color="#2196F3" />
+          <Countdown className="block m-t-2" targetTime={targetTime} showText showDay color="#2196F3" />
         </View>
         <View className="demo-section">
           <View className="title">手动操作倒计时事件</View>
           <View>
-            <Button className="btn" onClick={this.onStopCountdown}>
-              {this.state.isStop ? '开始倒计时' : '停止倒计时'}
-            </Button>
             <Button className="btn" onClick={this.onCloseCountdown}>
               结束倒计时
             </Button>
           </View>
-          <Countdown
-            targetTime={targetTime}
-            isStop={this.state.isStop}
-            isClose={this.state.isClose}
-            onEnd={this.onTimeEnd}
-          />
+          <Countdown targetTime={targetTime} isClose={this.state.isClose} onEnd={this.onTimeEnd} />
         </View>
         <View className="demo-section">
           <View className="title">倒计时过程事件</View>
