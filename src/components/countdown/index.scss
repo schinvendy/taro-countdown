@@ -1,0 +1,21 @@
+.countdown {
+  display: inline-block;
+  box-sizing: border-box;
+  .day {
+    margin-right: 10px;
+  }
+  &.with-border {
+    .day,
+    .hour,
+    .minute,
+    .second {
+      padding: 5px 10px;
+      background: transparent;
+      border: 1px solid;
+      border-radius: 8px;
+    }
+    .symbol {
+      margin: 0 10px;
+    }
+  }
+}
