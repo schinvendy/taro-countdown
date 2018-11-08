@@ -37,6 +37,7 @@ export default class Countdown extends Component {
     const { targetTimestamp } = this.state;
     !targetTimestamp && this.formatTargetTime(targetTime);
   }
+
   // 处理日期格式
   formatTargetTime(targetTime = '') {
     let time = targetTime.replace(/-/g, '/');
@@ -49,6 +50,7 @@ export default class Countdown extends Component {
       },
     );
   }
+
   // 计算剩余时间秒数
   getRemainingSecond() {
     if (!this.state.targetTimestamp) return;
@@ -77,6 +79,7 @@ export default class Countdown extends Component {
     }
     this.setTimeState(day, hour, minute, second);
   }
+
   // 设置时间
   setTimeState(day, hour, minute, second) {
     // 是否显示天时分秒文字
@@ -93,10 +96,12 @@ export default class Countdown extends Component {
       second,
     });
   }
+
   // 格式数字
   formatNum(num) {
     return num > 9 ? `${num}` : `0${num}`;
   }
+
   // 倒计时过程事件
   timeTick(remainingSecond) {
     setTimeout(() => {
@@ -104,6 +109,7 @@ export default class Countdown extends Component {
       this.getRemainingSecond();
     }, 1000);
   }
+  
   // 倒计时结束触发事件
   onTimeEnd() {
     this.props.onEnd && this.props.onEnd();
