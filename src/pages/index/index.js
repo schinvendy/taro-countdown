@@ -17,7 +17,22 @@ export default class Index extends Component {
     targetTime: '2018-12-22 20:00:00',
     isClose: false,
     second: 0,
+    time1: '',
+    time2: '',
   };
+
+  componentWillMount() {
+    setTimeout(() => {
+      this.setState({
+        time1: '2018-12-22 20:00:00',
+      });
+    }, 3000);
+    setTimeout(() => {
+      this.setState({
+        time2: '2018-12-22 20:00:00',
+      });
+    }, 5000);
+  }
 
   onCloseCountdown = () => {
     this.setState({
@@ -37,7 +52,7 @@ export default class Index extends Component {
   };
 
   render() {
-    const { targetTime } = this.state;
+    const { targetTime, time1, time2 } = this.state;
     return (
       <View className="demo">
         <View>目标时间： {targetTime}</View>
@@ -50,12 +65,12 @@ export default class Index extends Component {
           <Countdown targetTime={targetTime} symbol="-" />
         </View>
         <View className="demo-section">
-          <View className="title">显示文本</View>
-          <Countdown targetTime={targetTime} showText />
+          <View className="title">显示文本，异步赋值</View>
+          <Countdown targetTime={time1} showText />
         </View>
         <View className="demo-section">
-          <View className="title">显示天数</View>
-          <Countdown targetTime={targetTime} showDay showText />
+          <View className="title">显示天数，异步赋值</View>
+          <Countdown targetTime={time2} showDay showText />
           <View>
             <Countdown className="m-t-2" targetTime={targetTime} showDay />
           </View>

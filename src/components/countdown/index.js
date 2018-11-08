@@ -24,7 +24,7 @@ export default class Countdown extends Component {
     targetTimestamp: '',
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.formatTargetTime(this.props.targetTime);
   }
 
@@ -32,23 +32,28 @@ export default class Countdown extends Component {
     this.setState({ targetTimestamp: '' });
   }
 
+  componentWillReceiveProps(props) {
+    const { targetTime } = props;
+    const { targetTimestamp } = this.state;
+    !targetTimestamp && this.formatTargetTime(targetTime);
+  }
   // 处理日期格式
   formatTargetTime(targetTime = '') {
     let time = targetTime.replace(/-/g, '/');
     this.setState(
       {
-        targetTimestamp: new Date(time).getTime(),
+        targetTimestamp: new Date(time).getTime() || '',
       },
       () => {
-        this.getremainingSecond();
+        this.getRemainingSecond();
       },
     );
   }
-  // 计算剩余时间
-  getremainingSecond() {
+  // 计算剩余时间秒数
+  getRemainingSecond() {
     if (!this.state.targetTimestamp) return;
     // 目标时间
-    let targetTimestamp = this.state.targetTimestamp;
+    let targetTimestamp = this.state.targetTimestamp || new Date(this.props.targetTime).getTime();
     // 当前时间
     let currentTimestamp = new Date().getTime();
     // 剩余时间
@@ -96,7 +101,7 @@ export default class Countdown extends Component {
   timeTick(remainingSecond) {
     setTimeout(() => {
       this.props.onTick && this.props.onTick(remainingSecond);
-      this.getremainingSecond();
+      this.getRemainingSecond();
     }, 1000);
   }
   // 倒计时结束触发事件
