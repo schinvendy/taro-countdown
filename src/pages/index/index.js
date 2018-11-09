@@ -65,8 +65,12 @@ export default class Index extends Component {
           <Countdown targetTime={targetTime} symbol="-" />
         </View>
         <View className="demo-section">
-          <View className="title">显示文本，异步赋值</View>
-          <Countdown targetTime={time1} showText />
+          <View className="title">带有边框</View>
+          <Countdown targetTime={targetTime} withBorder />
+        </View>
+        <View className="demo-section">
+          <View className="title">显示文本，异步赋值，自定义样式</View>
+          <Countdown className="demo-class" targetTime={time1} showText />
         </View>
         <View className="demo-section">
           <View className="title">显示天数，异步赋值</View>
@@ -74,10 +78,6 @@ export default class Index extends Component {
           <View>
             <Countdown className="m-t-2" targetTime={targetTime} showDay />
           </View>
-        </View>
-        <View className="demo-section">
-          <View className="title">带有边框</View>
-          <Countdown targetTime={targetTime} withBorder />
         </View>
         <View className="demo-section">
           <View className="title">改变文本颜色</View>

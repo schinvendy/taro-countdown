@@ -30,3 +30,25 @@ $font-size-title: 24px;
   line-height: 1;
   font-size: $font-size-base;
 }
+
+.demo-class {
+  color: #ffa726 !important;
+  font-size: 32px;
+  .hour {
+    border: 2px dashed #29b6f6;
+    padding: 5px;
+  }
+  .minute {
+    border-radius: 10px;
+    border: 2px dotted #e53935;
+    padding: 15px;
+  }
+  .second {
+    border: 2px groove #6d4c41;
+    padding: 8px;
+  }
+  .symbol {
+    margin: 0 10px;
+    color: #e65100;
+  }
+}

@@ -5,6 +5,10 @@ import classNames from 'classnames';
 import './index.scss';
 
 export default class Countdown extends Component {
+  static options = {
+    addGlobalClass: true,
+  };
+
   static defaultProps = {
     targetTime: '', // 目标时间
     showText: false, //  显示时分秒
@@ -40,6 +44,7 @@ export default class Countdown extends Component {
 
   // 处理日期格式
   formatTargetTime(targetTime = '') {
+    // 避免iOS端上的日期格式有问题
     let time = targetTime.replace(/-/g, '/');
     this.setState(
       {
@@ -55,7 +60,7 @@ export default class Countdown extends Component {
   getRemainingSecond() {
     if (!this.state.targetTimestamp) return;
     // 目标时间
-    let targetTimestamp = this.state.targetTimestamp || new Date(this.props.targetTime).getTime();
+    let targetTimestamp = this.state.targetTimestamp;
     // 当前时间
     let currentTimestamp = new Date().getTime();
     // 剩余时间
@@ -109,14 +114,14 @@ export default class Countdown extends Component {
       this.getRemainingSecond();
     }, 1000);
   }
-  
+
   // 倒计时结束触发事件
   onTimeEnd() {
     this.props.onEnd && this.props.onEnd();
   }
 
   render() {
-    const { withBorder, color, symbol, showDay, className } = this.props;
+    const { withBorder, color, symbol, symbolColor, showDay, className } = this.props;
     const { day, hour, minute, second } = this.state;
     const countdownClass = classNames(
       'countdown',

@@ -1,3 +1,5 @@
+const path = require('path');
+
 const config = {
   projectName: 'taro-countdown',
   date: '2018-11-7',
