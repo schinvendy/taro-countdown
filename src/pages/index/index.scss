@@ -34,18 +34,22 @@ $font-size-title: 24px;
 .demo-class {
   color: #ffa726 !important;
   font-size: 32px;
-  .hour {
-    border: 2px dashed #29b6f6;
-    padding: 5px;
-  }
-  .minute {
-    border-radius: 10px;
-    border: 2px dotted #e53935;
-    padding: 15px;
-  }
+  .hour,
+  .minute,
   .second {
-    border: 2px groove #6d4c41;
-    padding: 8px;
+    position: relative;
+    border-radius: 15px;
+    border: 1px solid #29b6f6;
+    padding: 5px 10px;
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      height: 1px;
+      width: 100%;
+      background: #29b6f6;
+    }
   }
   .symbol {
     margin: 0 10px;

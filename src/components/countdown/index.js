@@ -1,6 +1,5 @@
-import Taro, { Component } from '@tarojs/taro';
+import { Component } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
-import classNames from 'classnames';
 
 import './index.scss';
 
@@ -121,15 +120,12 @@ export default class Countdown extends Component {
   }
 
   render() {
-    const { withBorder, color, symbol, symbolColor, showDay, className } = this.props;
+    const { withBorder, color, symbol, showDay, className } = this.props;
     const { day, hour, minute, second } = this.state;
-    const countdownClass = classNames(
-      'countdown',
-      {
-        'with-border': withBorder,
-      },
-      className,
-    );
+    // 末尾有空格
+    let countdownClass = 'countdown ';
+    if (withBorder) countdownClass += 'with-border ';
+    if (className) countdownClass += className;
     const countdownStyle = {
       color: color,
     };

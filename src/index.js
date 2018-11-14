@@ -1,1 +1,3 @@
-export { default as Countdown } from './components/countdown/index';
+import Countdown from './components/countdown/index';
+
+export default Countdown;

@@ -59,6 +59,9 @@ export default class Index extends Component {
         <View className="demo-section">
           <View className="title">基础使用</View>
           <Countdown targetTime={targetTime} />
+          <View>
+            <Countdown targetTime="2018-12-22 20:00:00" />
+          </View>
         </View>
         <View className="demo-section">
           <View className="title">自定义符号间隔</View>
@@ -74,7 +77,7 @@ export default class Index extends Component {
         </View>
         <View className="demo-section">
           <View className="title">显示天数，异步赋值</View>
-          <Countdown targetTime={time2} showDay showText />
+          <Countdown targetTime={time2} showDay showText symbol="" />
           <View>
             <Countdown className="m-t-2" targetTime={targetTime} showDay />
           </View>
