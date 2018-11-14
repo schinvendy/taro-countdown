@@ -12,6 +12,10 @@ import Countdown from 'taro-countdown';
 <Countdown targetTime="2018-12-22" />;
 ```
 
+# 预览
+
+[taro-countdown](https://schinvendy.github.io/taro-countdown/.)
+
 # 功能
 
 ```js
@@ -135,6 +139,24 @@ onTimeTick = second => {
 <Countdown targetTime={targetTime} onTick={this.onTimeTick} />
 ```
 
+# 参数
+
+| 参数       | 说明           | 类型    | 可选值 | 默认值 |
+| :--------- | :------------- | :------ | :----- | :----- |
+| targetTime | 目标时间       | String  | 必填项 |        |
+| color      | 字体颜色       | String  | -      | #111   |
+| symbol     | 间隔符号       | String  | -      | ：     |
+| showText   | 是否显示时分秒 | Boolean | -      | false  |
+| showDay    | 是否显示天数   | Boolean | -      | false  |
+| isClose    | 是否关闭倒计时 | Boolean | -      | false  |
+
+# 事件
+
+| 事件名称 | 说明             | 返回参数   |
+| :------- | :--------------- | :--------- |
+| onTick   | 倒计时过程事件   | 剩余的秒数 |
+| onEnd    | 倒计时结束时触发 | -          |
+
 # 该项目的打包命令
 
 ```bash
@@ -158,6 +180,7 @@ taro build --ui
 ```
 
 在 PowerShell 中:
+
 先输入
 
 ```bash
