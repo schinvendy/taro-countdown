@@ -19,94 +19,110 @@ import Countdown from 'taro-countdown';
 # 功能
 
 ```js
-state = {
-  targetTime: '2018-12-22 20:00:00',
+this.state = {
+  targetTime: '',
+  time1: '',
+  isClose: false,
 };
 ```
 
-<!-- ![基本使用](/docs/img/基础使用.png) -->
+## 基础使用
 
-## 基本使用
-
-```html
-<Countdown targetTime={targetTime} />
-<Countdown targetTime="2018-12-22 20:00:00" />
+```jsx
+<Countdown targetTime={this.state.targetTime} />
+<Countdown targetTime="2019-12-30 20:00:00" />
 ```
 
-<!-- ![自定义符号间隔](/docs/img/自定义符号间隔.png) -->
+> 以下 targetTime 均为 this.state.targetTim；time1 均为 this.state.time1
 
-## 自定义符号间隔
+## 异步赋值
 
-```html
-<Countdown targetTime={targetTime} symbol="-" />
+3 秒后赋值，再 3 秒后设置目标时间为：2019-12-31 23:30:30
+
+```js
+setTimeout(() => {
+  this.setState(
+    {
+      time1: '2019-12-30 20:00:00',
+    },
+    () => {
+      setTimeout(() => {
+        this.setState({
+          time1: '2019-12-31 23:30:30',
+        });
+      }, 3000);
+    },
+  );
+}, 3000);
 ```
 
-<!-- ![带有边框](/docs/img/带有边框.png) -->
-
-## 带有边框
-
-```html
- <Countdown targetTime={targetTime} withBorder />
+```jsx
+<Countdown targetTime={time1} />
 ```
 
-## 显示文本，自定义样式
+## 修改间隔符号
 
-```css
+```jsx
+<Countdown targetTime={time1} symbol="--" />
+```
+
+## 修改字体颜色
+
+```jsx
+<Countdown targetTime={time1} color="#2196F3" />
+```
+
+## 自定义样式
+
+```scss
 .demo-class {
-  color: #ffa726 !important;
-  font-size: 32px;
-  .hour,
-  .minute,
-  .second {
-    position: relative;
-    border-radius: 15px;
-    border: 1px solid #29b6f6;
-    padding: 5px;
-    &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      height: 1px;
-      width: 100%;
-      background: #29b6f6;
-    }
-  }
-  .symbol {
-    margin: 0 10px;
-    color: #e65100;
+  padding: 8px 20px;
+  background: linear-gradient(to top right, #ff6355, #fe4737);
+  color: #fff !important;
+  border: 1px solid #fe4737;
+  border-radius: 100px;
+  font-family: Arial, Helvetica, sans-serif;
+  .symbol,
+  .day-text {
+    margin: 0 8px;
   }
 }
 ```
 
-```html
-  <Countdown className="demo-class" targetTime={targetTime} showText />
+```jsx
+<Countdown className="demo-class" targetTime={targetTime} />
 ```
 
-## 显示天数
+## 显示天数、时分秒
 
-```html
-<Countdown targetTime={targetTime} showDay showText symbol="" />
-<Countdown targetTime={targetTime} showDay />
+```jsx
+<Countdown className="demo-class" showDay targetTime={targetTime} />
+
+<Countdown className="demo-class" showText targetTime={targetTime} />
+
+<Countdown className="demo-class" showDay showText targetTime={targetTime} symbol="/" />
 ```
 
-## 改变文本颜色
-
-```html
-<Countdown targetTime={targetTime} withBorder showText showDay color="red" />
-<Countdown targetTime={targetTime} showText showDay color="#2196F3" />
-```
-
-## 手动操作倒计时事件
+## 倒计时过程事件
 
 ```js
-state = {
-  isClose: false,
+onTimeTick = second => {
+  this.setState({ second });
 };
+```
 
-onCloseCountdown = () => {
+```jsx
+<View className="m-b-2">剩余秒数：{this.state.second}</View>
+
+<Countdown targetTime={targetTime} showText showDay color="#2196F3" onTick={this.onTimeTick.bind(this)} />
+```
+
+## 手动结束事件
+
+```js
+onCloseCountdown = state => {
   this.setState({
-    isClose: true,
+    isClose: state,
   });
 };
 
@@ -114,41 +130,25 @@ onTimeEnd = () => {
   Taro.showToast({
     title: '倒计时结束',
   });
+  console.log('倒计时结束触发事件');
 };
 ```
 
-```html
-<Button  onClick={this.onCloseCountdown}>结束倒计时</Button>
-<Countdown targetTime={targetTime} isClose={this.state.isClose} onEnd={this.onTimeEnd} />
-```
+```jsx
+<Button size="mini" type="default" onClick={this.onCloseCountdown.bind(this, true)}>结束倒计时</Button>
 
-## 倒计时过程事件
-
-```js
-state = {
-  second: 0,
-};
-
-onTimeTick = second => {
-  this.setState({ second });
-};
-```
-
-```html
-<View>剩余秒数：{this.state.second}</View>
-<Countdown targetTime={targetTime} onTick={this.onTimeTick} />
+<Countdown targetTime={targetTime} isClose={this.state.isClose} onEnd={this.onTimeEnd.bind(this)} />
 ```
 
 # 参数
 
-| 参数       | 说明           | 类型    | 可选值 | 默认值 |
-| :--------- | :------------- | :------ | :----- | :----- |
-| targetTime | 目标时间       | String  | 必填项 |        |
-| color      | 字体颜色       | String  | -      | #111   |
-| symbol     | 间隔符号       | String  | -      | ：     |
-| showText   | 是否显示时分秒 | Boolean | -      | false  |
-| showDay    | 是否显示天数   | Boolean | -      | false  |
-| isClose    | 是否关闭倒计时 | Boolean | -      | false  |
+| 参数       | 说明           | 类型    | 可选值 | 默认值  |
+| :--------- | :------------- | :------ | :----- | :------ |
+| targetTime | 目标时间       | String  | 必填项 |         |
+| color      | 字体颜色       | String  | -      | inherit |
+| symbol     | 间隔符号       | String  | -      | ：      |
+| showText   | 是否显示时分秒 | Boolean | -      | false   |
+| isClose    | 是否关闭倒计时 | Boolean | -      | false   |
 
 # 事件
 
