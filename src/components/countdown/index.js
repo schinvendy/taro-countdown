@@ -115,8 +115,8 @@ export default class Countdown extends Component {
 
   // 倒计时过程事件
   timeTick(remainingSecond) {
+    this.props.onTick && this.props.onTick(remainingSecond);
     setTimeout(() => {
-      this.props.onTick && this.props.onTick(remainingSecond);
       this.getRemainingSecond();
     }, 1000);
   }
