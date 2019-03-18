@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Button } from '@tarojs/components';
+import { View, Button, Picker } from '@tarojs/components';
 import Countdown from '../../components/countdown';
 
 import './index.scss';
@@ -59,11 +59,22 @@ export default class Index extends Component {
     this.setState({ second });
   };
 
+  onDateChange = e => {
+    this.setState({
+      targetTime: e.detail.value,
+    });
+  };
+
   render() {
     const { targetTime, time1 } = this.state;
     return (
       <View className="demo">
         <View>目标时间： {targetTime}</View>
+        <View>
+          <Picker mode="date" onChange={this.onDateChange.bind(this)}>
+            <View className="picker">点击手动选择时间：{targetTime}</View>
+          </Picker>
+        </View>
         <View className="demo-section">
           <View className="title">基础使用</View>
           <Countdown targetTime={targetTime} />
