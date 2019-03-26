@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Button, Picker } from '@tarojs/components';
+import { View, Text, Input, Button } from '@tarojs/components';
 import Countdown from '../../components/countdown';
 
 import './index.scss';
@@ -17,8 +17,12 @@ export default class Index extends Component {
     super(...arguments);
     this.state = {
       targetTime: '',
+      count: 60,
       time1: '',
       isClose: false,
+      // 输入的数值
+      inputTargetTime: '',
+      inputCount: '',
     };
   }
 
@@ -59,31 +63,93 @@ export default class Index extends Component {
     this.setState({ second });
   };
 
+  onCountTick = second => {
+    console.log(second);
+  };
+
   onDateChange = e => {
     this.setState({
       targetTime: e.detail.value,
     });
   };
 
+  onInput = (type, e) => {
+    if (type === 'count') {
+      this.setState({
+        inputCount: e.detail.value,
+      });
+    } else {
+      this.setState({
+        inputTargetTime: e.detail.value,
+      });
+    }
+  };
+
+  onBtnClick = type => {
+    if (type === 'count') {
+      this.setState({
+        count: this.state.inputCount,
+      });
+    } else {
+      let d = new Date(this.state.inputTargetTime);
+      if (!(d instanceof Date && !isNaN(d))) {
+        Taro.showToast({
+          icon: 'none',
+          title: 'Invalid Date',
+        });
+        return;
+      }
+      this.setState({
+        targetTime: this.state.inputTargetTime,
+      });
+    }
+  };
+
   render() {
-    const { targetTime, time1 } = this.state;
+    const { targetTime, count, time1 } = this.state;
     return (
       <View className="demo">
         <View>目标时间： {targetTime}</View>
-        <View>
-          <Picker mode="date" onChange={this.onDateChange.bind(this)}>
-            <View className="picker">点击手动选择时间：{targetTime}</View>
-          </Picker>
+        <View className="m-t-2">
+          <Input
+            className="demo-input"
+            type="text"
+            placeholder="输入目标时间(符合日期格式)"
+            onInput={this.onInput.bind(this, 'targetTime')}
+          />
+          <Button size="mini" type="default" onClick={this.onBtnClick.bind(this, 'targetTime')}>
+            确定
+          </Button>
+        </View>
+        <View className="m-t-2">
+          <Input
+            className="demo-input"
+            type="text"
+            placeholder="输入倒计秒数"
+            onInput={this.onInput.bind(this, 'count')}
+          />
+          <Button size="mini" type="default" onClick={this.onBtnClick.bind(this, 'count')}>
+            确定
+          </Button>
         </View>
         <View className="demo-section">
-          <View className="title">基础使用</View>
+          <View className="title">基础使用（时间倒计时）</View>
           <Countdown targetTime={targetTime} />
+          <View className="title">基础使用（秒数倒计时）</View>
+          <Countdown count={count} onEnd={this.onTimeEnd.bind(this)} />
+          <Countdown
+            className="demo-class m-l-2"
+            color="#2196F3"
+            count={count}
+            onTick={this.onCountTick.bind(this)}
+            onEnd={this.onTimeEnd.bind(this)}
+          />
           <View className="title">异步赋值（3秒后），再3秒后目标时间为：2019-12-31 23:30:30</View>
           <Countdown targetTime={time1} />
           <View className="title">修改间隔符号</View>
-          <Countdown targetTime={time1} symbol="--" />
+          <Countdown targetTime={targetTime} symbol="--" />
           <View className="title">修改字体颜色</View>
-          <Countdown targetTime={time1} color="#2196F3" />
+          <Countdown targetTime={targetTime} color="#2196F3" />
         </View>
         <View className="demo-section">
           <View className="title">自定义样式</View>

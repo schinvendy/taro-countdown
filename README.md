@@ -10,6 +10,7 @@ npm i -S taro-countdown
 import Countdown from 'taro-countdown';
 
 <Countdown targetTime="2018-12-22" />;
+<Countdown count={60} />
 ```
 
 # 预览
@@ -18,22 +19,21 @@ import Countdown from 'taro-countdown';
 
 # 功能
 
-```js
-this.state = {
-  targetTime: '',
-  time1: '',
-  isClose: false,
-};
-```
+倒计时分为`时间倒计时`和`秒数倒计时`
+
+设置 `targetTime` 为 时间倒计时模式
+
+设置 `count` 为 秒数倒计时模式
+
+> 只要设置了 `targetTime`，则显示为时间倒计时模式
 
 ## 基础使用
 
 ```jsx
 <Countdown targetTime={this.state.targetTime} />
 <Countdown targetTime="2019-12-30 20:00:00" />
+<Countdown count={60} />
 ```
-
-> 以下 targetTime 均为 this.state.targetTim；time1 均为 this.state.time1
 
 ## 异步赋值
 
@@ -142,13 +142,16 @@ onTimeEnd = () => {
 
 # 参数
 
-| 参数       | 说明           | 类型    | 可选值 | 默认值  |
-| :--------- | :------------- | :------ | :----- | :------ |
-| targetTime | 目标时间       | String  | 必填项 |         |
-| color      | 字体颜色       | String  | -      | inherit |
-| symbol     | 间隔符号       | String  | -      | ：      |
-| showText   | 是否显示时分秒 | Boolean | -      | false   |
-| isClose    | 是否关闭倒计时 | Boolean | -      | false   |
+| 参数                       | 说明           | 类型    | 可选值 | 默认值  |
+| :------------------------- | :------------- | :------ | :----- | :------ |
+| targetTime                 | 目标时间       | String  | -      | -       |
+| count                      | 倒计秒数       | Number  | -      | -       |
+| color                      | 字体颜色       | String  | -      | inherit |
+| 以下为 targetTime 模式生效 |
+| symbol                     | 间隔符号       | String  | -      | ：      |
+| showDay                    | 是否显示天     | Boolean | -      | false   |
+| showText                   | 是否显示时分秒 | Boolean | -      | false   |
+| isClose                    | 是否关闭倒计时 | Boolean | -      | false   |
 
 # 事件
 
