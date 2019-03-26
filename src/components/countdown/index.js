@@ -9,12 +9,17 @@ export default class Countdown extends Component {
   };
 
   static defaultProps = {
-    targetTime: '', // 目标时间
+    targetTime: '', // 以时间来进行倒计时
+    count: '', // 以秒数来进行倒计时
+    color: 'inherit', // 字体颜色
+
+    // targetTime 模式下生效
     showText: false, //  显示时分秒
     showDay: false, // 显示天数
-    color: 'inherit', // 字体颜色
     symbol: ':', // 间隔符号
     isClose: false, // 手动关闭倒计时
+
+    // 共用事件
     onTick: () => {}, // 倒计时过程事件
     onEnd: () => {}, //倒计时结束事件
   };
@@ -26,31 +31,69 @@ export default class Countdown extends Component {
       hour: '00',
       minute: '00',
       second: '00',
+      countText: '0',
     };
     this.targetTimestamp = null;
+    this.timer = null;
   }
 
   componentDidMount() {
-    this.formatTargetTime(this.props.targetTime);
+    const { targetTime, count } = this.props;
+    if (targetTime) {
+      this.formatTargetTime(targetTime);
+    } else if (count) {
+      this.setCountdown(count);
+    }
   }
 
   componentWillUnmount() {
     this.targetTimestamp = null;
+    clearInterval(this.timer);
   }
 
   componentDidHide() {
     this.targetTimestamp = null;
+    clearInterval(this.timer);
   }
 
   componentDidShow() {
-    this.formatTargetTime(this.props.targetTime);
+    const { targetTime, count } = this.props;
+    if (targetTime) {
+      this.formatTargetTime(targetTime);
+    } else if (count) {
+      this.setCountdown(count);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { targetTime } = nextProps;
-    if (targetTime !== this.props.targetTime) {
+    const { targetTime, count } = nextProps;
+    if (targetTime && targetTime !== this.props.targetTime) {
       this.formatTargetTime(targetTime);
+    } else if (count && count !== this.props.count) {
+      clearInterval(this.timer);
+      this.setCountdown(count);
     }
+  }
+
+  setCountdown(count) {
+    if (count <= 0) {
+      return;
+    }
+    let second = count;
+    this.setState({
+      countText: second,
+    });
+    this.timer = setInterval(() => {
+      second--;
+      this.setState({
+        countText: second,
+      });
+      this.props.onTick && this.props.onTick(second);
+      if (second <= 0) {
+        clearInterval(this.timer);
+        this.onTimeEnd();
+      }
+    }, 1000);
   }
 
   // 处理日期格式
@@ -128,29 +171,36 @@ export default class Countdown extends Component {
   }
 
   render() {
-    const { color, symbol, showDay, className } = this.props;
-    const { day, hour, minute, second } = this.state;
+    const { color, symbol, showDay, className, targetTime } = this.props;
+    const { day, hour, minute, second, countText } = this.state;
     // 末尾有空格
     let countdownClass = 'countdown ';
     if (className) countdownClass += className;
     const countdownStyle = {
       color: color,
     };
+    if (targetTime) {
+      return (
+        <View className={countdownClass} style={countdownStyle}>
+          {showDay && day !== '00' && (
+            <Text>
+              <Text className="day">{day}</Text>
+              <Text className="day-text">天</Text>
+            </Text>
+          )}
+          <Text>
+            <Text className="hour">{hour}</Text>
+            <Text className="symbol">{symbol}</Text>
+          </Text>
+          <Text className="minute">{minute}</Text>
+          <Text className="symbol">{symbol}</Text>
+          <Text className="second">{second}</Text>
+        </View>
+      );
+    }
     return (
       <View className={countdownClass} style={countdownStyle}>
-        {showDay && day !== '00' && (
-          <Text>
-            <Text className="day">{day}</Text>
-            <Text className="day-text">天</Text>
-          </Text>
-        )}
-        <Text>
-          <Text className="hour">{hour}</Text>
-          <Text className="symbol">{symbol}</Text>
-        </Text>
-        <Text className="minute">{minute}</Text>
-        <Text className="symbol">{symbol}</Text>
-        <Text className="second">{second}</Text>
+        <Text className="second">{countText}</Text>
       </View>
     );
   }
